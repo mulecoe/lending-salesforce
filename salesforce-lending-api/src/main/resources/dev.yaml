@@ -1,0 +1,63 @@
+sffinancial:
+  username: "poojagbhat100199-hkjd@force.com"
+  password: "Nous@1234"
+  token:    "wjT7lVJhzVxDEv2dF25qyYHV"
+  
+sf:
+  username: "nousinfo2022@gmail.com"
+  password: "Classmate@1234"
+  token: "trduqWNVUxdBkT2gdbrjpKm5K"
+  
+pdfgen:
+  clientId: "3c8f934f0c93e677d8f7167655d08f4617e4a1feec0a3a64b07b39f573277872"
+  clientSec: "3ba799e675778be800ca327f9cdaf2b4909c932b55385874756b15fc9f1dfbe7"
+  userId: "prakashsr.7725@gmail.com"  
+   
+   
+     
+salesforce:
+  username: "poojagbhat100199-hkjd@force.com"
+  password : "Nous@1234"
+  securitytoken: "wjT7lVJhzVxDEv2dF25qyYHV"
+  uploadurl: "http://salesforce-document-api.sg-s1.cloudhub.io/api/documents"
+  subcribertopic : "creditreportrequested"
+  aggregratorapiurl: "http://salesforce-aggregator-api.sg-s1.cloudhub.io/loanapplicant"
+    
+pdf:  
+  url: "http://pdf-generator-api.sg-s1.cloudhub.io/api/generate-pdf/"
+  
+  templateid: "479563"  
+  
+verification:
+  url: "http://lending-loan-verification-api.sg-s1.cloudhub.io/v1/creditScore/{SSN}"
+  
+plaidaccelerator:
+  basePath: "api"
+  url: "plaid-len-accelerator-api.sg-s1.cloudhub.io"
+  path: "upload-document"
+  
+commsaccelerator:
+  url: "nous-comms-accelerator.sg-s1.cloudhub.io"
+  basePath: "api"
+  path: "comms/notify/email"
+  
+formsaccelerator:
+  url: "http://forms-accelerator-api.sg-s1.cloudhub.io/api/nous/mulesoftforms/generate/{envelop-id}"
+  loanform: "c5611c4c-efb1-4897-97f7-7994cc13e9bc"
+  otpform: "c366af40-c1bd-4b67-9224-02c72fb1a291"
+  
+  
+  
+storage:
+  url: "salesforce-document-api.sg-s1.cloudhub.io"
+  basePath: "api"
+  path: "documents"
+  
+mongo:
+  formcollection : "mongodb+srv://prakashsr:rqEICMCTPE5y0P4M@fiscluster.ulxri.mongodb.net/generic-forms-accelerator?retryWrites=true&w=majority"
+  loandetails: "mongodb+srv://prakashsr:rqEICMCTPE5y0P4M@fiscluster.ulxri.mongodb.net/LoanDatabase?retryWrites=true&w=majority"
+  formscollectionname: "forms-data"
+  loandetailscollectionname: "loandetails"
+  LendingAcc: "mongodb+srv://prakashsr:rqEICMCTPE5y0P4M@fiscluster.ulxri.mongodb.net/LendingAcc?retryWrites=true&w=majority"
+  plaidUserCredsCol: "UserCredentials"
+  

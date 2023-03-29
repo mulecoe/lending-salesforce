@@ -48,7 +48,7 @@
 
 <password>${anypoint.password}</password>
 
-<applicationName>salesforce-lending-api1</applicationName>
+<applicationName>salesforce-lending-api</applicationName>
 
 <environment>Sandbox</environment>
 

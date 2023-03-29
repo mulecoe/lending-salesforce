@@ -22,36 +22,35 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
-				
-			<configuration>
-			
-			<cloudHubDeployment>
-			
-			<uri>https://anypoint.mulesoft.com</uri>
-			
-			<muleVersion>4.4.0</muleVersion>
-			
-			<username>${anypoint.username}</username>
-			
-			<password>${anypoint.password}</password>
-			
-			<applicationName>salesforce-lending-api</applicationName>
-			
-			<environment>Sandbox</environment>
-			
-			<workerType>MICRO</workerType>
-			
-			<region>us-east-2</region>
-			
-			<workers>1</workers>
-			
-			<objectStoreV2>true</objectStoreV2>
-			
-			</cloudHubDeployment>
-			
-			</configuration>
-			
+				<configuration>
+
+<cloudHubDeployment>
+
+<uri>https://anypoint.mulesoft.com</uri>
+
+<muleVersion>4.4.0</muleVersion>
+
+<username>${anypoint.username}</username>
+
+<password>${anypoint.password}</password>
+
+<applicationName>salesforce-lending-api1</applicationName>
+
+<environment>Sandbox</environment>
+
+<workerType>MICRO</workerType>
+
+<region>us-east-2</region>
+
+<workers>1</workers>
+
+<objectStoreV2>true</objectStoreV2>
+
+</cloudHubDeployment>
+
+</configuration>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>

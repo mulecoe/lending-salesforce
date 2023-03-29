@@ -6,7 +6,6 @@
 	<artifactId>sf-financial-api</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-
 	<name>salesforce-lending-api</name>
 
 	<properties>
@@ -24,6 +23,7 @@
 				<artifactId>maven-clean-plugin</artifactId>
 				<version>3.0.0</version>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
@@ -38,7 +38,8 @@
 					</sharedLibraries>
 					<cloudHubDeployment>
 
-<uri>https://anypoint.mulesoft.com</uri>
+					<uri>https://anypoint.mulesoft.com</uri>
+
 <businessGroup>NOUS INFO SYSTEMS</businessGroup>
 
 <muleVersion>4.4.0</muleVersion>
@@ -60,7 +61,7 @@
 <objectStoreV2>true</objectStoreV2>
 
 </cloudHubDeployment>
-					
+
 				</configuration>
 			</plugin>
 						
@@ -123,7 +124,6 @@
 			<type>zip</type>
 		</dependency>
 	</dependencies>
-
 	<repositories>
 		<repository>
 			<id>anypoint-exchange-v3</id>

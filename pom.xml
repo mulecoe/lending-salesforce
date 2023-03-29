@@ -30,6 +30,12 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
+					<sharedLibraries>
+						<sharedLibrary>
+							<groupId>org.mongodb</groupId>
+							<artifactId>mongodb-driver-legacy</artifactId>
+						</sharedLibrary>
+					</sharedLibraries>
 
 <cloudHubDeployment>
 
@@ -55,14 +61,6 @@
 
 </cloudHubDeployment>
 
-</configuration>
-				<configuration>
-					<sharedLibraries>
-						<sharedLibrary>
-							<groupId>org.mongodb</groupId>
-							<artifactId>mongodb-driver-legacy</artifactId>
-						</sharedLibrary>
-					</sharedLibraries>
 				</configuration>
 			</plugin>
 		</plugins>

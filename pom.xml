@@ -48,7 +48,7 @@
 
 <password>${anypoint.password}</password>
 
-<applicationName>mule-app-cicd-github</applicationName>
+<applicationName>salesforce-lending-api1</applicationName>
 
 <environment>Sandbox</environment>
 

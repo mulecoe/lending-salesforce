@@ -6,7 +6,7 @@
 	<artifactId>sf-financial-api</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-	<name>salesforce-lending-api2</name>
+	<name>salesforce-lending-api</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -36,10 +36,8 @@
 							<artifactId>mongodb-driver-legacy</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
-
-<cloudHubDeployment>
-
-<uri>https://anypoint.mulesoft.com</uri>
+					<cloudHubDeployment>
+					<uri>https://anypoint.mulesoft.com</uri>
 <businessGroup>NOUS INFO SYSTEMS</businessGroup>
 
 <muleVersion>4.4.0</muleVersion>
@@ -61,7 +59,6 @@
 <objectStoreV2>true</objectStoreV2>
 
 </cloudHubDeployment>
-
 				</configuration>
 			</plugin>
 		</plugins>

@@ -3,7 +3,7 @@
     <http:listener-config name="lending-accelerator-api-httpListenerConfig">
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
-    <apikit:config name="lending-accelerator-api-config" api="resource::551efc85-4561-403b-9bba-8e45bdf1a723:lending-accelerator-api:1.0.5:raml:zip:lending-accelerator-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <apikit:config name="lending-accelerator-api-config" api="api\lending-accelerator-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <flow name="lending-accelerator-api-main">
         <http:listener config-ref="lending-accelerator-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">

@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>sf-financial-api</artifactId>
+	<artifactId>sf-financial-api3</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-	<name>salesforce-lending-api</name>
+	<name>salesforce-lending-api3</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -48,7 +48,7 @@
 
 <password>${anypoint.password}</password>
 
-<applicationName>salesforce-lending-api</applicationName>
+<applicationName>salesforce-lending-api3</applicationName>
 
 <environment>Sandbox</environment>
 
@@ -116,13 +116,7 @@
 			<version>1.5.11</version>
 			<classifier>mule-plugin</classifier>
 		</dependency>
-		<dependency>
-			<groupId>551efc85-4561-403b-9bba-8e45bdf1a723</groupId>
-			<artifactId>lending-accelerator-api</artifactId>
-			<version>1.0.5</version>
-			<classifier>raml</classifier>
-			<type>zip</type>
-		</dependency>
+		
 	</dependencies>
 	<repositories>
 		<repository>

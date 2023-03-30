@@ -74,10 +74,16 @@ jobs:
         CLIENTID: ${{ secrets.CLIENTID }}
         CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
         GRANTTYPE: ${{ secrets.GRANTTYPE }}
+        ENV: ${{ secrets.ENV }}
+        REGION: ${{secrets.REGION }}
+        WORKERS: ${{ secrets.WORKERS }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
          -Dconnectedapp.clientid="$CLIENTID" \
          -Dconnectedapp.clientsecret="$CLIENTSECRET" \
          -Dconnectedapp.granttype="$GRANTTYPE" \
+         -Dapp.env="$ENV" \
+         -Dapp.region="$REGION" \
+         -Dapp.workers="$WORKERS \
          -DskipTests

@@ -80,4 +80,7 @@ jobs:
          -Dconnectedapp.clientid="$CLIENTID" \
          -Dconnectedapp.clientsecret="$CLIENTSECRET" \
          -Dconnectedapp.granttype="$GRANTTYPE" \
+         -Dapp.env="$ENV" \
+         -Dapp.region="$REGION" \
+         -Dapp.workers="$WORKERS \
          -DskipTests

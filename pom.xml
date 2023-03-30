@@ -37,9 +37,9 @@
 	<connectedAppClientSecret>${connectedapp.clientsecret}</connectedAppClientSecret>
 	<connectedAppGrantType>${connectedapp.granttype}</connectedAppGrantType>
 	<applicationName>salesforce-lending-api</applicationName>
-	<environment>Sandbox</environment>
-	<region>us-east-2</region>
-	<workers>1</workers>
+	<environment>${app.env}</environment>
+	<region>${app.region}</region>
+	<workers>${app.workers}</workers>
 	<workerType>MICRO</workerType>
 	<objectStoreV2>true</objectStoreV2>
 </cloudHubDeployment>

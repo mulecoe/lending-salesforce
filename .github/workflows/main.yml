@@ -74,6 +74,9 @@ jobs:
         CLIENTID: ${{ secrets.CLIENTID }}
         CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
         GRANTTYPE: ${{ secrets.GRANTTYPE }}
+        ENV: ${{ secrets.ENV }}
+        REGION: ${{secrets.REGION }}
+        WORKERS: ${{ secrets.WORKERS }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \

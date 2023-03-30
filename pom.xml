@@ -3,10 +3,10 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mycompany</groupId>
-	<artifactId>sf-financial-api3</artifactId>
+	<artifactId>sf-financial-api</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>mule-application</packaging>
-	<name>salesforce-lending-api3</name>
+	<name>salesforce-lending-api</name>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,38 +30,25 @@
 				<version>${mule.maven.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
+				<cloudHubDeployment>
+	<uri>https://anypoint.mulesoft.com</uri>
+	<muleVersion>4.4.0</muleVersion>
+	<connectedAppClientId>${connectedapp.clientid}</connectedAppClientId>
+	<connectedAppClientSecret>${connectedapp.clientsecret}</connectedAppClientSecret>
+	<connectedAppGrantType>${connectedapp.granttype}</connectedAppGrantType>
+	<applicationName>salesforce-lending-api</applicationName>
+	<environment>Sandbox</environment>
+	<region>us-east-2</region>
+	<workers>1</workers>
+	<workerType>MICRO</workerType>
+	<objectStoreV2>true</objectStoreV2>
+</cloudHubDeployment>
 					<sharedLibraries>
 						<sharedLibrary>
 							<groupId>org.mongodb</groupId>
 							<artifactId>mongodb-driver-legacy</artifactId>
 						</sharedLibrary>
 					</sharedLibraries>
-					<cloudHubDeployment>
-
-					<uri>https://anypoint.mulesoft.com</uri>
-
-<businessGroup>NOUS INFO SYSTEMS</businessGroup>
-
-<muleVersion>4.4.0</muleVersion>
-
-<username>${anypoint.username}</username>
-
-<password>${anypoint.password}</password>
-
-<applicationName>salesforce-lending-api3</applicationName>
-
-<environment>Sandbox</environment>
-
-<workerType>MICRO</workerType>
-
-<region>us-east-2</region>
-
-<workers>1</workers>
-
-<objectStoreV2>true</objectStoreV2>
-
-</cloudHubDeployment>
-
 				</configuration>
 			</plugin>
 						

@@ -85,5 +85,5 @@ jobs:
          -Dconnectedapp.granttype="$GRANTTYPE" \
          -Dapp.env="$ENV" \
          -Dapp.region="$REGION" \
-         -Dapp.workers="$WORKERS \
+         -Dapp.workers="$WORKERS" \
          -DskipTests

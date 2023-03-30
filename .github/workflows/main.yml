@@ -71,11 +71,13 @@ jobs:
     
     - name: Deploy to Sandbox
       env:
-        USERNAME: ${{ secrets.USERNAME }}
-        PASSWORD: ${{ secrets.PASSWORD }}
+        CLIENTID: ${{ secrets.CLIENTID }}
+        CLIENTSECRET: ${{ secrets.CLIENTSECRET }}
+        GRANTTYPE: ${{ secrets.GRANTTYPE }}
       run: |
         artifactName=$(ls *.jar | head -1)
         mvn deploy -DmuleDeploy \
-         -Danypoint.username="$USERNAME" \
-         -Danypoint.password="$PASSWORD" \
+         -Dconnectedapp.clientid="$CLIENTID" \
+         -Dconnectedapp.clientsecret="$CLIENTSECRET" \
+         -Dconnectedapp.granttype="$GRANTTYPE" \
          -DskipTests

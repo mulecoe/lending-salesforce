@@ -126,7 +126,8 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 	Email: payload01.email,
 	Status: payload01.status,
 	NumberOfEmployees: payload01."no of employees" as Number,
-	SSN__c: payload01.SSN
+	SSN__c: payload01.SSN,
+	Type__c: payload01.applicationtype
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>

@@ -11,5 +11,6 @@
     "street": "28th main road",
     "city": "Bangalore",
     "state": "Karnataka",
-    "zipcode": "577201"
+    "zipcode": "577201",
+    "applicationtype": "Lending"
 }]

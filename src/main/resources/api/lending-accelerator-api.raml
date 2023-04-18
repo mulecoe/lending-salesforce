@@ -5,19 +5,17 @@ types:
   postleads: !include datatypes/postLeads.raml
   updateowner: !include datatypes/updateOwner.raml
   updatestatus: !include datatypes/updatestatus.raml
-  
-  
+
 /loanform/submit:
   description: Inserts the form data from forms accelerator to MongoDB
   post:
     body:
       application/json:
-        example: !include examples/getLoanapplicant.json
+        example: !include /examples/loanform.json
     responses:
       200:
         body:
           application/json:
-
 
 /lending:
   /loanapplicant:

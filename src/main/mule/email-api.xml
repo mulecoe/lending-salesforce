@@ -7,7 +7,7 @@ http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mu
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 	<flow name="email-apiFlow" doc:id="00f00382-03b4-42f0-88f8-24aed82deb7c" >
-		<salesforce:subscribe-topic-listener doc:name="Subscribe topic listener" doc:id="7af276f8-ebef-41a6-8730-58574d56bf84" config-ref="leads-config" topic="Working-Contacted"/>
+		<salesforce:subscribe-topic-listener doc:name="Subscribe topic listener" doc:id="7af276f8-ebef-41a6-8730-58574d56bf84" config-ref="leads-config" topic="working-contacted-lending"/>
 		<ee:transform doc:name="vars.sfdata" doc:id="efdbee4c-b0bd-4fb2-9da5-6df7a013cf4e" >
 			<ee:message >
 			</ee:message>

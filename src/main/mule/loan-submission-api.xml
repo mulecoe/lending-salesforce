@@ -1188,19 +1188,6 @@ output application/json
 vars.compositeResponse]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<ee:transform doc:name="Transform Message" doc:id="f1d4a80a-4ed4-4c34-9544-14ed1f621cb6">
-			<ee:message>
-				<ee:set-attributes ><![CDATA[%dw 2.0
-output application/json
----
-{
-	"queryParams":{
-		"id" : vars.'compositeResponse'.compositeResponse.body.id[9]
-}
-
-}]]></ee:set-attributes>
-			</ee:message>
-		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="3b6e95d4-b3e2-4628-8f36-0ac42745bab7" message="#[vars.compositeResponse]" />
 		<choice doc:name="Copy_of_Choice" doc:id="72895efc-70f4-4e40-8080-d3f7f68408f0" >
 			<when expression="#[contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[0]) or contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[1]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[2]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[3]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[4]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[5]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[6]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[7]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[8]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[9])]" >
@@ -1212,5 +1199,18 @@ output application/json
 				<flow-ref doc:name="Copy_of_emailflow" doc:id="4d28d7ba-ec1d-459e-95f3-da7fd4c2f5e5" name="emailflow" />
 			</otherwise>
 		</choice>
+		<ee:transform doc:name="Transform Message" doc:id="f1d4a80a-4ed4-4c34-9544-14ed1f621cb6">
+			<ee:message>
+				<ee:set-attributes><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"queryParams":{
+		"id" : vars.'compositeResponse'.compositeResponse.body.id[9]
+}
+
+}]]></ee:set-attributes>
+			</ee:message>
+		</ee:transform>
 	</flow>
 </mule>

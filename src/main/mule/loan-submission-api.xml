@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:s3="http://www.mulesoft.org/schema/mule/s3" xmlns:email="http://www.mulesoft.org/schema/mule/email"
-	xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo"
-	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:salesforce-composite="http://www.mulesoft.org/schema/mule/salesforce-composite" xmlns:s3="http://www.mulesoft.org/schema/mule/s3"
+	xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:mongo="http://www.mulesoft.org/schema/mule/mongo" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/mongo http://www.mulesoft.org/schema/mule/mongo/current/mule-mongo.xsd
 http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
-http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd">
+http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/current/mule-s3.xsd
+http://www.mulesoft.org/schema/mule/salesforce-composite http://www.mulesoft.org/schema/mule/salesforce-composite/current/mule-salesforce-composite.xsd">
 	
 	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="8322475d-3704-44da-8feb-a53b65c8ae2f" basePath="/api">
 		<http:request-connection host="storage-process-api.sg-s1.cloudhub.io" />
@@ -18,14 +19,14 @@ http://www.mulesoft.org/schema/mule/s3 http://www.mulesoft.org/schema/mule/s3/cu
 	</http:request-config>
 	<global-property doc:name="Global Property" doc:id="ada14269-619c-4f1c-8bf2-7bb95332d5d0" name="env" value="dev" />
 	<configuration-properties doc:name="Configuration properties" doc:id="a25cb10d-96f7-407c-bc0d-bcd5a4f39e55" file="dev.properties" />
-	<flow name="objectCreation" doc:id="fc108e17-c737-4c82-871d-9df4f722a55b" >
+<!-- [STUDIO:"objectCreation"]	<flow name="objectCreation" doc:id="fc108e17-c737-4c82-871d-9df4f722a55b" >
 		<ee:transform doc:name="vars.inputPayload" doc:id="b405d3ff-2db9-40c7-95b3-250df60991d2">
 			<ee:message>
 			</ee:message>
 			<ee:variables>
 				<ee:set-variable variableName="sfdc-id"><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 {
 	mongoDB_id : uuid()
 	
@@ -57,7 +58,7 @@ OpportunityId: vars.oppId,
 "AmortizationTerm":obj."loan-tenure",
 "AmortizationType": "Fixed Rate"
 }])
----
+&#45;&#45;-
 ResidentialLoanMapping(payload)]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -107,7 +108,7 @@ ResidenceCountry: obj."permaddr-country",
   
 
 }])
----
+&#45;&#45;-
 LoanApplicantAddrMapping(payload)
 
 ]]></ee:set-variable>
@@ -138,7 +139,7 @@ fun LoanApplicantDecMapping(obj:Object) = ([{
 	Borrowed_Before__c : (if(obj.'borrowed-before'=="yes") "true" else "false") as Boolean
 	
 }])
----
+&#45;&#45;-
 LoanApplicantDecMapping(payload)
 ]]></ee:set-variable>
 				<ee:set-variable variableName="emp"><![CDATA[%dw 2.0
@@ -167,7 +168,7 @@ fun LoanApplicantEmpMapping(obj:Object) = ([{
     Employment_Occupation__c: obj.'employment-occup'
     
 }])
----
+&#45;&#45;-
 LoanApplicantEmpMapping(payload)
 
 
@@ -209,7 +210,7 @@ LoanApplicantEmpMapping(payload)
 					<ee:message >
 						<ee:set-payload ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 
 	"errored" : {
 		errorcode: error.description,
@@ -225,8 +226,8 @@ output application/json
 				<flow-ref doc:name="emailflow" doc:id="7442c4cc-9869-455c-aba9-156106173a1b" name="emailflow"/>
 			</on-error-propagate>
 		</error-handler>
-	</flow>
-	<sub-flow name="createLoanApplicant" doc:id="0e28b4fa-e3f9-49bd-a7b3-7ee712441dc6" >
+	</flow> [STUDIO] -->
+<!-- [STUDIO:"createLoanApplicant"]	<sub-flow name="createLoanApplicant" doc:id="0e28b4fa-e3f9-49bd-a7b3-7ee712441dc6" >
 		<ee:transform doc:name="vars.loanApplicantMapping" doc:id="c36cacc7-7a05-4da2-85b5-b1d6abe5c10e" >
 			<ee:message >
 			</ee:message>
@@ -249,7 +250,7 @@ PreferredLanguage : if(obj.'preferred-language' == "English") "English" else "Ot
 "Permanent_resident_alien_number__c" : obj.'citizenship-alien-number',
 Citizenship_Expiry_Date__c : obj.'citizenship-expdate'
 }])
----
+&#45;&#45;-
 LoanApplicantMapping(vars.jsondata)
 
 ]]></ee:set-variable>
@@ -266,8 +267,8 @@ LoanApplicantMapping(vars.jsondata)
 				<flow-ref doc:name="mongoUpdate" doc:id="3de2b8b1-3519-49fa-bb9a-f2f8d7e2d2d7" name="mongoUpdate" />
 			</otherwise>
 		</choice>
-	</sub-flow>
-	<sub-flow name="loan-applicationFlow" doc:id="fcd93fcc-6420-4ea9-9adb-118f3bc75527" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"loan-applicationFlow"]	<sub-flow name="loan-applicationFlow" doc:id="fcd93fcc-6420-4ea9-9adb-118f3bc75527" >
 		<ee:transform doc:name="vars.applicationMapping" doc:id="cadf8544-a276-4f1c-82cc-a40fdfe30a27" >
 			<ee:message >
 			</ee:message>
@@ -292,7 +293,7 @@ fun LoanApplicationMapping(obj:Object) = ([{"Name": obj.fname ++ " " ++ obj.mnam
 "CitizenshipStatus__c" : obj.'citizenship',
 "Application_Reference_No__c" : obj.'loan_reference_id'
 }])
----
+&#45;&#45;-
 LoanApplicationMapping(vars.jsondata)
 
 ]]></ee:set-variable>
@@ -309,8 +310,8 @@ LoanApplicationMapping(vars.jsondata)
 				<flow-ref doc:name="mongoUpdate" doc:id="a23265f8-219e-425f-85b8-28051bf9543a" name="mongoUpdate"/>
 			</otherwise>
 		</choice>
-	</sub-flow>
-	<sub-flow name="createResedentialLoanApplication" doc:id="110d864f-ab09-4eb6-90c8-b87e8f1546f9" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"createResedentialLoanApplication"]	<sub-flow name="createResedentialLoanApplication" doc:id="110d864f-ab09-4eb6-90c8-b87e8f1546f9" >
 		<ee:transform doc:name="vars.rloanapplicationmapping" doc:id="9ed410d7-5849-47f8-a21d-7ea3aefdc016" >
 			<ee:message >
 			</ee:message>
@@ -329,7 +330,7 @@ OpportunityId: vars.oppId,
 "AmortizationTerm":obj."loan-tenure",
 "AmortizationType": "Fixed Rate"
 }])
----
+&#45;&#45;-
 ResidentialLoanMapping(vars.jsondata)]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -344,8 +345,8 @@ ResidentialLoanMapping(vars.jsondata)]]></ee:set-variable>
 				<flow-ref doc:name="mongoUpdate" doc:id="eb6fd9d8-792a-42b6-9d57-9a28cf56eff6" name="mongoUpdate" />
 			</otherwise>
 		</choice>
-	</sub-flow>
-	<sub-flow name="createOpportunity" doc:id="f1b9de91-2183-45af-ade9-f65b9b8d4371" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"createOpportunity"]	<sub-flow name="createOpportunity" doc:id="f1b9de91-2183-45af-ade9-f65b9b8d4371" >
 		<ee:transform doc:name="vars.oppmapping" doc:id="dda9095b-d7c5-47f8-9fd7-27aaf7afc3a9" >
 			<ee:message >
 			</ee:message>
@@ -358,7 +359,7 @@ fun oppurtunityMapping(obj:Object) = ([{
 StageName: "Qualification",
 AccountId: vars.acctId
 }])
----
+&#45;&#45;-
 oppurtunityMapping(vars.jsondata)]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -373,8 +374,8 @@ oppurtunityMapping(vars.jsondata)]]></ee:set-variable>
 				<flow-ref doc:name="mongoUpdate" doc:id="5c3560c5-96d9-4284-81f3-a47886ccb837" name="mongoUpdate" />
 			</otherwise>
 		</choice>
-	</sub-flow>
-	<sub-flow name="createcontact" doc:id="fd09ef76-ebf1-4b0d-8ba2-5c876e4d2bc6" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"createcontact"]	<sub-flow name="createcontact" doc:id="fd09ef76-ebf1-4b0d-8ba2-5c876e4d2bc6" >
 		<ee:transform doc:name="vars.referenceContact" doc:id="81724f26-1c89-4299-9f44-d83fc7aecbaa">
 			<ee:message>
 			</ee:message>
@@ -401,7 +402,7 @@ fun ContactMapping(obj:Object) = ([
 
 ])
 
----
+&#45;&#45;-
 
 ContactMapping(vars.jsondata)]]></ee:set-variable>
 			</ee:variables>
@@ -444,7 +445,7 @@ fun ContactMapping(obj:Object) = ([
 
 ])
 
----
+&#45;&#45;-
 
 ContactMapping(vars.jsondata)]]></ee:set-variable>
 			</ee:variables>
@@ -461,8 +462,8 @@ ContactMapping(vars.jsondata)]]></ee:set-variable>
 				<flow-ref doc:name="mongoUpdate" doc:id="4c469607-2ae0-4472-a8f3-01d567606539" name="mongoUpdate" />
 			</otherwise>
 		</choice>
-	</sub-flow>
-	<sub-flow name="createAccount" doc:id="51823135-d9f4-406a-a62d-4a5feb69702c" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"createAccount"]	<sub-flow name="createAccount" doc:id="51823135-d9f4-406a-a62d-4a5feb69702c" >
 		<ee:transform doc:name="vars.accountmapping" doc:id="b89c473c-b952-4e56-a9e4-74de64f0df59" >
 			<ee:message >
 			</ee:message>
@@ -481,7 +482,7 @@ fun AccountMapping(obj:Object) = ([
 
 ])
 
----
+&#45;&#45;-
 
 AccountMapping(vars.jsondata)]]></ee:set-variable>
 			</ee:variables>
@@ -497,7 +498,7 @@ AccountMapping(vars.jsondata)]]></ee:set-variable>
 				<flow-ref doc:name="mongoUpdate" doc:id="c5aada39-8dad-4737-ba12-f28faa14d8cc" name="mongoUpdate" />
 			</otherwise>
 		</choice>
-	</sub-flow>
+	</sub-flow> [STUDIO] -->
 	<sub-flow name="mongoUpdate" doc:id="2dedb5e7-de9e-4ac1-8c25-4197292a5eb8" >
 		<ee:transform doc:name="vars.mongoData" doc:id="f058d78d-f225-47c1-86aa-1942386cf236">
 			<ee:message>
@@ -508,15 +509,15 @@ output application/json
 ---
 {
 	CreatedDate: now(),
-	AccountId : vars.acctId,
-	ContactId: vars.contactId,
-	OpportunityId: vars.oppId,
-	LoanApplicantId: vars.loanappId,
-	LoanApplicationId: vars.applicationId,
+	AccountId : vars.compositeResponse.compositeResponse.body.id[0],
+	ContactId: vars.compositeResponse.compositeResponse.body.id[3],
+	OpportunityId: vars.compositeResponse.compositeResponse.body.id[2],
+	LoanApplicantId: vars.compositeResponse.compositeResponse.body.id[5],
+	LoanApplicationId: vars.compositeResponse.compositeResponse.body.id[9],
 	TransferStatus: vars.transferstatus,
-	LoanAddressId: vars.loanaddrId,
-	LoanDeclarationId: vars.declareId,
-	LoanEmploymentId: vars.empId
+	LoanAddressId: vars.compositeResponse.compositeResponse.body.id[8],
+	LoanDeclarationId: vars.compositeResponse.compositeResponse.body.id[7],
+	LoanEmploymentId: vars.compositeResponse.compositeResponse.body.id[6]
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -607,7 +608,7 @@ output multipart/form-data
 output application/json
 ---
 {
-	"uuid" : vars.applicationId as String
+	"uuid" : vars.compositeResponse.compositeResponse.body.id[9] as String
 }]]]></http:body>
 			<http:uri-params><![CDATA[#[output application/java
 ---
@@ -704,7 +705,7 @@ output application/java
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-		<flow-ref doc:name="objectCreation" doc:id="b22cdc5e-9ab0-4af1-89ac-bd5909defce7" name="objectCreation"/>
+		<flow-ref doc:name="objectCreation" doc:id="b22cdc5e-9ab0-4af1-89ac-bd5909defce7" name="composite-flow"/>
 		<ee:transform doc:name="converting to multipart" doc:id="8793d67d-d872-4b4a-abc7-1c27002de8c0" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
@@ -737,15 +738,6 @@ output multipart/form-data
 
 
 ]]></ee:set-payload>
-				<ee:set-attributes ><![CDATA[%dw 2.0
-output application/json
----
-{
-	"queryParams":{
-		"id" : vars.applicationId
-}
-
-}]]></ee:set-attributes>
 			</ee:message>
 		</ee:transform>
 <flow-ref doc:name="uploadDoc" doc:id="94a889ae-5e1c-4cc1-abf1-03df9982221c" name="uploadDoc"/>
@@ -825,4 +817,400 @@ payload.'loan_reference_id']]></ee:set-payload>
 		<parse-template doc:name="Parse Template" doc:id="94568976-8c07-4f54-94f3-1f1678bbe684" location="forms\submission_landingpage.html"/>
     
 </flow>
+	<flow name="composite-flow" doc:id="8a648dac-0bd1-44c5-8049-ed2abdd5b8da">
+		<ee:transform doc:name="vars.inputPayload" doc:id="9610604c-1718-4a67-9cb1-aa9b610efc8f">
+			<ee:message />
+			<ee:variables>
+				<ee:set-variable variableName="sfdc-id"><![CDATA[%dw 2.0
+output application/json
+---
+{
+	mongoDB_id : uuid()
+	
+}]]></ee:set-variable>
+				<ee:set-variable variableName="transferstatus"><![CDATA["In progress"]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<mongo:insert-document collectionName="${mongo.loandetailscollectionname}" doc:name="create sfdc-id" doc:id="a0c1f01c-025d-4bf2-a2de-0410542167a8" config-ref="loan-details-config" target="mongodb">
+			<mongo:document><![CDATA[#[vars."sfdc-id"]]]></mongo:document>
+		</mongo:insert-document>
+		<ee:transform doc:name="transform Message" doc:id="24ea81d6-6bc9-4d9e-b73f-e8267c36fc06">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/json
+fun ObjectMapping(obj:Object) = (
+
+   {
+   	"allOrNone" : true,
+	"compositeRequest": [
+        {
+			"method": "POST",
+			"url": "/services/data/v51.0/sobjects/Account",
+			"referenceId": "refAccount",
+			"body": {
+				"Name" : obj.fname ++ " " ++ obj.mname++ " " ++ obj.lname,
+       "AccountNumber": uuid()
+       
+			}
+		},
+		{
+			"method": "POST",
+			"url": "/services/data/v51.0/sobjects/Contact",
+			"referenceId": "referenceContact",
+			"body": {
+				 "LastName": obj.'ref-lname',
+       "FirstName": obj.'ref-fname',
+       "MiddleName": obj.'ref-mname',
+       "Type__c" : "Reference contact",
+       "Phone": obj."ref-permaddr-phone",
+       "MailingStreet":  obj."ref-permaddr",
+       "MailingCity": obj."ref-permaddr-city",
+       "MailingState": obj."ref-permaddr-state",
+         "MailingPostalCode": obj."ref-permaddr-zip",
+  "AccountId" : "@{refAccount.id}",
+  "MobilePhone" : obj.'ref-permaddr-phone-alt'
+			}
+
+		},
+		{
+			"method" : "POST",
+			"url": "/services/data/v51.0/sobjects/Contact",
+			"referenceId": "empContact",
+			"body" : {
+				"LastName": obj.lname,
+				"FirstName": obj.fname,
+				"MiddleName": obj.mname,
+				"Type__c" : "Employee contact",
+				"Phone": obj."phonenum-primary",
+				"OtherPhone" : obj.'phonenum-alt',
+				"Email": obj."email-primary",
+				"MailingStreet": obj."permaddr-line",
+				"MailingCity": obj."permaddr-city",
+				"MailingState": obj."permaddr-state",
+				"MailingPostalCode": obj."permaddr-zip",
+				"MailingCountry":obj."permaddr-country",
+				"AccountId" : "@{refAccount.id}",
+				'Birthdate' : obj.'dob' as Date,
+				"Reference_Contact__c" : "@{referenceContact.id}"
+				
+			}
+			
+		},
+		{
+            "method": "POST",
+            "url": "/services/data/v51.0/sobjects/Opportunity",
+            "referenceId": "refOpportunity",
+            "body": {
+                "Name": obj.fname ++ " " ++ obj.mname ++ " " ++ obj.lname,
+"CloseDate": now() as Date {format: "YYYY-MM-dd" },
+"StageName": "Qualification",
+"AccountId": "@{refAccount.id}"
+            }
+        },
+        {
+            "method": "POST",
+            "url": "/services/data/v51.0/sobjects/ResidentialLoanApplication",
+            "referenceId": "refResidentialLoanApplication",
+            "body": {
+                "Name": uuid(),
+"OpportunityId": "@{refOpportunity.id}",
+"Status": "New",
+"MortgageProgramType": "Conventional",
+"LoanPurpose": obj."loan-reason",
+"LotOriginalCost": obj."loan-amount",
+"InterestRate": obj."loan-intr-rate",
+"NativeLandTenure": "Fee Simple(On a reservation)",
+"AmortizationTerm":obj."loan-tenure",
+"AmortizationType": "Fixed Rate"
+            }
+        },
+        {
+            "method": "POST",
+            "url": "/services/data/v51.0/sobjects/LoanApplicant",
+            "referenceId": "refLoanApplicant",
+            "body": {
+            	"Name": obj.fname ++ " " ++ obj.mname ++ " " ++ obj.lname,
+                "ContactId": "@{empContact.id}",
+"MaritalStatus": obj."marital-status",
+LoanApplicationId: "@{refResidentialLoanApplication.id}",
+"DependentCount":obj."dependentscount" as Number,
+"DependentsAge":obj.'dependents-ages',
+"GenderType": obj."gender",
+Other_Gender__c: obj.'gender-other',
+"CitizenshipStatus": obj."citizenship",
+"SSN__c": obj."ssn",
+"HasMilitaryService" : "True" as Boolean,
+PreferredLanguage : if(obj.'preferred-language' == "English") "English" else "Other",
+"Other_Preffered__c" : if(obj.'preffered-language' == "Other") obj.'preferred-language-other-name' else null,
+"Permanent_resident_alien_number__c" : obj.'citizenship-alien-number',
+"Citizenship_Expiry_Date__c" : obj.'citizenship-expdate'
+            }
+        },
+        {
+
+            "method": "POST",
+            "url": "/services/data/v51.0/sobjects/LoanApplicantEmployment",
+            "referenceId": "refLoanApplicantEmployment",
+            "body": {
+
+                "Name": obj.fname ++ " " ++ obj.mname ++ " " ++ obj.lname,
+
+    "LoanApplicantId": "@{refLoanApplicant.id}",
+
+    "EmployerName" : obj.'employment-employer-name',
+
+"JobTitle" : obj.'employment-job-title',
+
+"CurrentJobYearCount" : obj.'employment-years' as Number,
+
+"EmployerPhone" : obj.'employment-workphone',
+
+"Otherincome_Source__c" :obj.'employment-otherincome-source',
+
+"MonthlyIncome" : obj.'employment-monthly-income',
+
+"MonthlyBaseIncomeAmount" : obj.'employment-monthly-base-income',
+
+"MonthlyOvertimeAmount" : obj.'employment-monthly-overtime-amnt',
+
+"MonthlyBonusAmount" : obj.'employment-monthly-bonus-amnt',
+
+"MonthlyCommissionAmount" : obj.'employment-monthly-comission-amnt',
+
+"MonthlyMilitaryEntlAmt": obj.'employment-monthly-military-ent-amnt',
+
+"MonthlyOtherIncomeAmount" : obj.'employment-monthly-other-amnt',
+
+"IsSelfEmployed" : (if(obj.'selfemployed' == "Yes") "True" else "False") as Boolean,
+
+"Monthlyrent_Mortgage__c": obj."monthlyrent-mortgage",
+
+"Employment_Type__c": obj."employment-type",
+
+"Employment_prevyears__c": obj.'employment-prevyears',
+
+"Employment_Occupation__c": obj.'employment-occup'
+
+            }
+
+        },
+        {
+
+            "method": "POST",
+
+            "url": "/services/data/v51.0/sobjects/LoanApplicantDeclaration",
+
+            "referenceId": "refLoanApplicantDeclaration",
+
+            "body": {
+
+                "Name": obj.fname ++ " " ++ obj.mname ++ " " ++ obj.lname,
+
+    "LoanApplicantId": "@{refLoanApplicant.id}",
+
+    "BorrowedAmount": obj."loan-amount",
+
+    "HasOutstandingJudgement": (if(obj.'dec-outstanding-judgement' == "yes")
+
+"true"
+
+else "false") as Boolean,
+
+    "HasDeclaredBankruptcy": (if(obj.'dec-declared-bankruptcy' == "yes")
+
+"true"
+
+else "false") as Boolean,
+
+    "HasUndisclAddlPropApp": (if(obj.'dec-undesclosed-loan' == "yes")
+
+"true"
+
+else "false") as Boolean,
+
+    
+
+    "IsPartyToLawsuit": (if(obj.'dec-party-to-lawsuit' == "yes")
+
+"true"
+
+else "false") as Boolean,
+
+    "HasPropertyForeclosed": (if(obj.'dec-foreclosed-property' == "yes")
+
+"true"
+
+else "false") as Boolean,
+
+    "BankruptcyType": obj.'dec-bankruptcy type',
+
+    "Loan_Defaulter__c": (if(obj.'loan-defaulter'=="yes") "true" else "false") as Boolean,
+
+    "Borrowed_Before__c" : (if(obj.'borrowed-before'=="yes") "true" else "false") as Boolean
+
+            }
+
+        },
+        {
+
+            "method": "POST",
+
+            "url": "/services/data/v51.0/sobjects/LoanApplicantAddress",
+
+            "referenceId": "refLoanApplicantAddress",
+
+            "body": {
+
+                "Name": obj.fname ++ " " ++ obj.mname ++ " " ++ obj.lname,
+
+"LoanApplicantId": "@{refLoanApplicant.id}",
+
+"ResidenceStreet": obj.'permaddr-line',
+
+"ResidenceCity": obj.'permaddr-city',
+
+"ResidenceState": obj.'permaddr-state',
+
+"ResidencePostalCode":obj.'permaddr-zip',
+
+"ResidenceCountry": obj."permaddr-country",
+
+"Residence_Address_Years__c" : obj.'permaddr-years',
+
+"Previous_Address__c": obj."prevaddr-line" ++ " " ++ obj."prevaddr-city" ++ " " ++
+
+
+
+
+obj."prevaddr-state" ++ " " ++ " " ++ " " ++
+
+
+
+
+obj."prevaddr-country",
+
+Previous_Address_Years__c: obj."prevaddr-years",
+
+"CorrespondenceAddress__c": obj."correspaddr-line" ++ " " ++
+
+
+
+
+obj."correspaddr-city" ++ " " ++
+
+
+
+
+obj."correspaddr-state" ++ " " ++
+
+
+
+
+obj."correspaddr-zip" ++ " " ++ " " ++
+
+
+
+
+obj."correspaddr-country",
+
+"CorrespondenceAddress_Years__c": obj."correspaddr-years",
+
+"CorrespondenceAddress_Line__c" : obj."correspaddr-line",
+
+"CorrespondenceAddress_State__c" : obj."correspaddr-state",
+
+"CorrespondenceAddress_City__c" : obj."correspaddr-city",
+
+"CorrespondenceAddress_Country__c" : obj."correspaddr-country",
+
+"CorrespondenceAddress_Zip__c" : obj."correspaddr-zip",
+
+"Previous_Address_Line__c" : obj."prevaddr-line",
+
+"Previous_Address_City__c" : obj."prevaddr-city",
+
+"Previous_Address_State__C" : obj."prevaddr-state",
+
+"Previous_Address_Zipcode__c": obj."prevaddr-zip",
+
+"Previous_Address_Country__c" : obj."prevaddr-country"
+
+            }
+
+        },
+        {
+        "method": "POST",
+
+            "url": "/services/data/v51.0/sobjects/Loan_Application__c",
+
+            "referenceId": "refLoan_Application__c",
+
+            "body": {
+
+               "Name": obj.fname ++ " " ++ obj.mname ++ " " ++ obj.lname,
+"Contact__c": "@{empContact.id}",
+"Lead_Id__c" : obj.'leadId',
+"Loan_Applicant__c" : "@{refLoanApplicant.id}",
+"Loan_Applicant_Address__c" : "@{refLoanApplicantAddress.id}",
+"Loan_Applicant_Declaration__c" : "@{refLoanApplicantDeclaration.id}",
+"Loan_Applicant_Employment__c" : "@{refLoanApplicantEmployment.id}",
+"Loan_Purpose__c" : obj."loan-reason",
+"Marital_status__c": obj."marital-status",
+"No_of_Dependents__c":obj."dependentscount",
+"Dependent_s_Age__c":obj.'dependents-ages',
+"SSN__c": obj."ssn",
+"Borrower_Type__c" : obj.'borrower-type',
+"Interest_Rate__C" : obj.'loan-intr-rate',
+"Loan_Duration_in_Months__c" : obj."loan-tenure",
+"CitizenshipStatus__c" : obj.'citizenship',
+"Application_Reference_No__c" : obj.'loan_reference_id'
+}
+}
+
+	]
+}
+
+)
+
+---
+
+ObjectMapping(vars.jsondata)]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce-composite:execute-composite-request doc:name="Execute composite request" doc:id="7fe3032b-416f-4bac-b515-13166fa2b347" config-ref="Salesforce_Composite_Config" target="compositeResponse"/>
+		<ee:transform doc:name="Transform Message" doc:id="09c2cf0b-7f2c-40d9-bc09-c6df23aa7b72" >
+			<ee:message >
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="compositeResponse" ><![CDATA[%dw 2.0
+output application/json
+---
+vars.compositeResponse]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="f1d4a80a-4ed4-4c34-9544-14ed1f621cb6">
+			<ee:message>
+				<ee:set-attributes ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	"queryParams":{
+		"id" : vars.'compositeResponse'.compositeResponse.body.id[9]
+}
+
+}]]></ee:set-attributes>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="3b6e95d4-b3e2-4628-8f36-0ac42745bab7" message="#[vars.compositeResponse]" />
+		<choice doc:name="Copy_of_Choice" doc:id="72895efc-70f4-4e40-8080-d3f7f68408f0" >
+			<when expression="#[contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[0]) or contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[1]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[2]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[3]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[4]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[5]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[6]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[7]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[8]) or&#10;contains(&quot;400&quot;,vars.'compositeResponse'.compositeResponse.httpStatusCode[9])]" >
+				<raise-error doc:name="raise error" doc:id="5b887249-d22d-4570-aa0d-b2b00bc03f9e" type="ANY:NOTCREATED" description="Loan Object has not been created" />
+			</when>
+			<otherwise >
+				<set-variable value="Transfer Completed" doc:name="transferstatus" doc:id="0cf30aad-7b07-4e48-8125-751bd44c4475" variableName="transferstatus" />
+				<flow-ref doc:name="mongoUpdate" doc:id="cc8dd79f-c9a8-4e49-b7e7-fea2ea23fe39" name="mongoUpdate" />
+				<flow-ref doc:name="Copy_of_emailflow" doc:id="4d28d7ba-ec1d-459e-95f3-da7fd4c2f5e5" name="emailflow" />
+			</otherwise>
+		</choice>
+	</flow>
 </mule>

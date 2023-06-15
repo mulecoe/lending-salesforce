@@ -2,6 +2,8 @@ sffinancial:
   username: "poojagbhat100199-hkjd@force.com"
   password: "Nous@1234"
   token:    "wjT7lVJhzVxDEv2dF25qyYHV"
+  consumerkey: "3MVG9fe4g9fhX0E6gRC6I5tiYptTkop7lMiXVjjET7YKkBpUzAtEYX3ZsAVz84QzzHCD_vA46ty3YMC_uYLy1"
+  consumersecret: "48B45F4D88D813098C89886A1E58D0D4193702E26239FED81C27483E41E74338"
   
 sf:
   username: "dineshdini075@wise-hawk-jkfgkz.com"

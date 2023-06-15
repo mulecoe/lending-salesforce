@@ -1,24 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
-	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
-	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+<mule xmlns:salesforce-composite="http://www.mulesoft.org/schema/mule/salesforce-composite" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
-http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/salesforce-composite http://www.mulesoft.org/schema/mule/salesforce-composite/current/mule-salesforce-composite.xsd">
 	<flow name="salesforce-aggregator-apiFlow" doc:id="cee21dfe-11e4-410c-93a3-4cac49482f7d" >
 		<set-variable value="#[attributes.queryParams.id]" doc:name="Set Variable" doc:id="bb8e0285-5db6-492c-8b8b-b0943b8b2683" variableName="applicationId"/>
-		<flow-ref doc:name="retrievLoanApplication" doc:id="8366614f-2cdd-4d6b-871c-618823968bff" name="retrievLoanApplication" />
-		<flow-ref doc:name="retrieveLoanApplicant" doc:id="348b48fd-83d2-4802-9e20-16aef7a1fde3" name="retrieveLoanApplicant"/>
-		<flow-ref doc:name="retrieveLoanAddress" doc:id="83df3d2f-211b-45ca-a61e-b473ad8f4ed6" name="retrieveLoanAddress"/>
-		<flow-ref doc:name="retrieveLoanDeclaration" doc:id="f91c5f99-5088-47cf-9a46-6edddd5e9737" name="retrieveLoanDeclaration"/>
-		<flow-ref doc:name="retrieveLoanEmployment" doc:id="768617cd-40ea-42ce-b413-1857fa1fa6ec" name="retrieveLoanEmployment"/>
-		<flow-ref doc:name="retrieveContact" doc:id="6c0232f4-6e59-4e0e-897e-b2b73e5c3587" name="retrieveContact" />
-		<ee:transform doc:name="payload" doc:id="e2014f36-fa2b-4c13-9870-0fb9bf467af3" >
+<ee:transform doc:name="Transform Message" doc:id="f40afb74-936a-42e7-8ec4-c361771311b8">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
+output application/java
+---
+ {
+	"compositeRequest": [
+		{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/Loan_Application__c/" ++ vars.applicationId,
+   "referenceId" : "Loanapplication"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/LoanApplicant/@{Loanapplication.Loan_Applicant__c}",
+   "referenceId" : "LoanApplicant"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/LoanApplicantAddress/@{Loanapplication.Loan_Applicant_Address__c}",
+   "referenceId" : "LoanApplicantaddress"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/LoanApplicantDeclaration/@{Loanapplication.Loan_Applicant_Declaration__c}",
+   "referenceId" : "LoanApplicantdeclaration"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/LoanApplicantEmployment/@{Loanapplication.Loan_Applicant_Employment__c}",
+   "referenceId" : "LoanApplicantemployment"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/Contact/@{Loanapplication.Contact__c}",
+   "referenceId" : "Contact"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/Account/@{Contact.AccountId}",
+   "referenceId" : "Account"
+
+},
+{
+   "method" : "GET",
+   "url" : "/services/data/v51.0/sobjects/ResidentialLoanApplication/@{LoanApplicant.LoanApplicationId}",
+   "referenceId" : "ResidentialApplication"
+
+}
+
+
+		
+	]
+	}
+	]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<salesforce-composite:execute-composite-request doc:name="Execute composite request" doc:id="e6390783-4391-4096-9226-b6aa52b11463" config-ref="Salesforce_Composite_Config" />
+		<ee:transform doc:name="Transform Message" doc:id="909078f3-7d85-4f2f-aba7-b0348d09bd7d" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="43881d28-226f-482a-aa93-7b5ab88aef38" >
 			<ee:message >
 				<ee:set-payload ><![CDATA[%dw 2.0
 output application/json skipNullOn="everywhere"
 ---
+[
+ "LoanApplication":  payload.compositeResponse.body[0] - "attributes",
+  "LoanApplicant" : payload.compositeResponse.body[1] - "attributes",
+  "LoanApplicantAddress" : payload.compositeResponse.body[2] - "attributes",
+  "LoanApplicantDeclaration" : payload.compositeResponse.body[3] - "attributes",
+  "LoanApplicantEmployment" : payload.compositeResponse.body[4] - "attributes",
+ "Contact" : payload.compositeResponse.body[5] - "attributes",
+  "ResidentialLoanApplication" : payload.compositeResponse.body[6] - "attributes"
+]]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<!-- [STUDIO:"retrievLoanApplication"]		<flow-ref doc:name="retrievLoanApplication" doc:id="8366614f-2cdd-4d6b-871c-618823968bff" name="retrievLoanApplication" /> [STUDIO] -->
+		<!-- [STUDIO:"retrieveLoanApplicant"]		<flow-ref doc:name="retrieveLoanApplicant" doc:id="348b48fd-83d2-4802-9e20-16aef7a1fde3" name="retrieveLoanApplicant"/> [STUDIO] -->
+<!-- [STUDIO:"retrieveLoanAddress"]		<flow-ref doc:name="retrieveLoanAddress" doc:id="83df3d2f-211b-45ca-a61e-b473ad8f4ed6" name="retrieveLoanAddress"/> [STUDIO] -->
+<!-- [STUDIO:"retrieveLoanDeclaration"]		<flow-ref doc:name="retrieveLoanDeclaration" doc:id="f91c5f99-5088-47cf-9a46-6edddd5e9737" name="retrieveLoanDeclaration"/> [STUDIO] -->
+<!-- [STUDIO:"retrieveLoanEmployment"]		<flow-ref doc:name="retrieveLoanEmployment" doc:id="768617cd-40ea-42ce-b413-1857fa1fa6ec" name="retrieveLoanEmployment"/> [STUDIO] -->
+<!-- [STUDIO:"retrieveContact"]		<flow-ref doc:name="retrieveContact" doc:id="6c0232f4-6e59-4e0e-897e-b2b73e5c3587" name="retrieveContact" /> [STUDIO] -->
+<!-- [STUDIO:"payload"]		<ee:transform doc:name="payload" doc:id="e2014f36-fa2b-4c13-9870-0fb9bf467af3" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json skipNullOn="everywhere"
+&#45;&#45;-
 [
  "LoanApplication":  vars.loanapplication reduce ($),
  "LoanApplicant" : vars.loanapplicant reduce $,
@@ -29,9 +118,9 @@ output application/json skipNullOn="everywhere"
 "ResidentialLoanApplication" : vars.residentialLoanApplication reduce $$
 ]]]></ee:set-payload>
 			</ee:message>
-		</ee:transform>
+		</ee:transform> [STUDIO] -->
 	</flow>
-	<sub-flow name="retrieveLoanApplicant" doc:id="ee0311a9-8a4a-43ec-8885-7348a60163dc" >
+<!-- [STUDIO:"retrieveLoanApplicant"]	<sub-flow name="retrieveLoanApplicant" doc:id="ee0311a9-8a4a-43ec-8885-7348a60163dc" >
 		<ee:transform doc:name="sf query" doc:id="a945c4ae-3589-4ea0-93e6-35d9c1827fd7" >
 			<ee:message >
 				<ee:set-payload ><![CDATA["Select Fields(All) from LoanApplicant where Id = '" ++ vars.loanapplicantId ++ "' limit 50"]]></ee:set-payload>
@@ -46,7 +135,7 @@ output application/json skipNullOn="everywhere"
 			<ee:variables >
 				<ee:set-variable variableName="loanapplicant" ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
@@ -65,18 +154,18 @@ payload]]></ee:set-variable>
 			<ee:variables >
 				<ee:set-variable variableName="residentialLoanApplication" ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-	</sub-flow>
-	<sub-flow name="retrievLoanApplication" doc:id="7a8dec74-5483-44ea-aacc-d49573c90b87" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"retrievLoanApplication"]	<sub-flow name="retrievLoanApplication" doc:id="7a8dec74-5483-44ea-aacc-d49573c90b87" >
 		<ee:transform doc:name="sf query" doc:id="e758ac00-d1b2-459e-9234-cab93adf111a">
 			<ee:message>
 				<ee:set-payload><![CDATA["Select Fields(All) from Loan_Application__c where Id = '" ++ vars.applicationId ++ "' limit 50"]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<salesforce:query doc:name="Query to retrieve loan applicant details" doc:id="378d0ddb-1de9-4979-9797-0abf536617d0" config-ref="Salesforce_Config" target="loanapplication">
+		<salesforce:query doc:name="Query to retrieve loan application details" doc:id="378d0ddb-1de9-4979-9797-0abf536617d0" config-ref="Salesforce_Config" target="loanapplication">
 			<salesforce:salesforce-query><![CDATA[#[payload]]]></salesforce:salesforce-query>
 		</salesforce:query>
 		<ee:transform doc:name="vars.loanapplicant" doc:id="fbea455c-73cd-4754-a008-2a8e7b4b4191">
@@ -90,8 +179,8 @@ payload]]></ee:set-variable>
 				<ee:set-variable variableName="loanapplicantId" ><![CDATA[vars.loanapplication.Loan_Applicant__c reduce $$]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-	</sub-flow>
-	<sub-flow name="retrieveLoanDeclaration" doc:id="22378bb0-2209-4a8e-bb1e-a7979920bb07" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"retrieveLoanDeclaration"]	<sub-flow name="retrieveLoanDeclaration" doc:id="22378bb0-2209-4a8e-bb1e-a7979920bb07" >
 		<ee:transform doc:name="sf query" doc:id="f393b518-100f-417f-8ecc-48a365726736" >
 			<ee:message >
 				<ee:set-payload ><![CDATA["Select Fields(All) from LoanApplicantDeclaration where Id = '" ++ vars.loandeclare ++ "' limit 50"]]></ee:set-payload>
@@ -106,12 +195,12 @@ payload]]></ee:set-variable>
 			<ee:variables >
 				<ee:set-variable variableName="declare" ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-	</sub-flow>
-	<sub-flow name="retrieveLoanAddress" doc:id="61bb81d4-bd30-4651-b9f0-341583c79fa3" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"retrieveLoanAddress"]	<sub-flow name="retrieveLoanAddress" doc:id="61bb81d4-bd30-4651-b9f0-341583c79fa3" >
 		<ee:transform doc:name="sf query" doc:id="d010f7be-8a09-4566-8140-4168ddcd1020" >
 			<ee:message >
 				<ee:set-payload ><![CDATA["Select Fields(All) from LoanApplicantAddress where Id = '" ++ vars.loanaddress ++ "' limit 50"]]></ee:set-payload>
@@ -126,15 +215,15 @@ payload]]></ee:set-variable>
 			<ee:variables >
 				<ee:set-variable variableName="address" ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-	</sub-flow>
-	<sub-flow name="retrieveContact" doc:id="b305d993-56e6-4130-8e7c-c429ff568350" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"retrieveContact"]	<sub-flow name="retrieveContact" doc:id="b305d993-56e6-4130-8e7c-c429ff568350" >
 		<ee:transform doc:name="sf query" doc:id="9238bdbc-6e9b-4cab-a80d-fad9911c3fe6" >
 			<ee:message >
-				<ee:set-payload ><![CDATA["Select Fields(ALL),Reference_Contact__r.FirstName,Reference_Contact__r.LastName,Reference_Contact__r.MiddleName,Reference_Contact__r.MailingStreet,Reference_Contact__r.MailingCity,Reference_Contact__r.MailingState,Reference_Contact__r.MailingPostalCode,Reference_Contact__r.MailingAddress,Reference_Contact__r.Phone,Reference_Contact__r.MobilePhone from Contact where Id = '" ++ vars.contact ++ "' limit 50"]]></ee:set-payload>
+				<ee:set-payload ><![CDATA["Select Fields(ALL),Reference_Contact__r.FirstName,Reference_Contact__r.LastName,Reference_Contact__r.MiddleName,Reference_Contact__r.MailingStreet,Reference_Contact__r.MailingCity,Reference_Contact__r.MailingState,Reference_Contact__r.MailingPostalCode,Reference_Contact__r.MailingAddress,Reference_Contact__r.Phone,Reference_Contact__r.MobilePhone from Contact where Id = '" ++ vars.contact ++ "'"]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
 		<salesforce:query doc:name="Query to retrieve contact details" doc:id="d0e1d91c-7bcb-4fdc-a64d-c0398f3b04c5" config-ref="Salesforce_Config">
@@ -146,12 +235,12 @@ payload]]></ee:set-variable>
 			<ee:variables >
 				<ee:set-variable variableName="contact" ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-	</sub-flow>
-	<sub-flow name="retrieveLoanEmployment" doc:id="e0fecf9c-a136-4379-9dd6-6176d69258c9" >
+	</sub-flow> [STUDIO] -->
+<!-- [STUDIO:"retrieveLoanEmployment"]	<sub-flow name="retrieveLoanEmployment" doc:id="e0fecf9c-a136-4379-9dd6-6176d69258c9" >
 		<ee:transform doc:name="sf query" doc:id="5ef12d49-4000-4cbf-9006-b1fc7d083402" >
 			<ee:message >
 				<ee:set-payload ><![CDATA["Select Fields(All) from LoanApplicantEmployment where Id = '" ++ vars.loanemployment  ++ "' limit 50"]]></ee:set-payload>
@@ -166,11 +255,11 @@ payload]]></ee:set-variable>
 			<ee:variables >
 				<ee:set-variable variableName="employment" ><![CDATA[%dw 2.0
 output application/json
----
+&#45;&#45;-
 payload]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-	</sub-flow>
+	</sub-flow> [STUDIO] -->
 	<flow name="salesforce-aggregator-Emailapi" doc:id="c8250a13-f2a3-4448-b7ab-aec79098cdd7" >
 		<ee:transform doc:name="Transform Message" doc:id="8edad220-cee0-46dd-95df-b45e772e9146" >
 			<ee:message >

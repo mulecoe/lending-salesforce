@@ -590,16 +590,16 @@ payload]]></ee:set-payload>
 		</ee:transform>
 		<logger level="INFO" doc:name="Logger" doc:id="e6a15eee-cc02-4c2b-832c-f6b13e308575" message="#[payload]"/>
 	</flow>
-	<flow name="sfdc-plaid-validationFlow" doc:id="23ac8078-7f1f-4bad-ab4e-d9e600f4c81e" >
+	<flow name="sfdc-plaid-validationFlow" doc:id="23ac8078-7f1f-4bad-ab4e-d9e600f4c81e">
 		<logger level="INFO" doc:name="Logger" doc:id="c429f136-7b24-4fcf-beaf-bfd2374ee66a" message="#[%dw 2.0
 &#10;output application/json
 &#10;---
-&#10;payload]"/>
-		<ee:transform doc:name="SF Created status loan application" doc:id="4a584d2b-f09a-439c-bb86-1e8a0113d4cb" >
-			<ee:message >
+&#10;payload]" />
+		<ee:transform doc:name="SF Created status loan application" doc:id="4a584d2b-f09a-439c-bb86-1e8a0113d4cb">
+			<ee:message>
 			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="salesforceAggResponse" ><![CDATA[%dw 2.0
+			<ee:variables>
+				<ee:set-variable variableName="salesforceAggResponse"><![CDATA[%dw 2.0
 output application/json
 ---
 vars.jsondata]]></ee:set-variable>
@@ -614,26 +614,26 @@ vars.jsondata]]></ee:set-variable>
 }]]]></http:query-params>
 		</http:request> [STUDIO] -->
 		<mongo:find-documents doc:name="Find documents" doc:id="137104a1-f241-41be-a7f8-a585da88f01d" config-ref="LendingAcc" collectionName="${mongo.plaidUserCredsCol}" fields=",">
-			<mongo:query ><![CDATA[#[%dw 2.0
+			<mongo:query><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
 	"contact_id": vars.salesforceAggResponse.Contact..Id[0]
 }]]]></mongo:query>
 		</mongo:find-documents>
-		<ee:transform doc:name="plaid credentials" doc:id="3104ae5c-8432-4353-84d1-37545081ea49" >
-			<ee:message >
-				<ee:set-payload ><![CDATA[%dw 2.0
+		<ee:transform doc:name="plaid credentials" doc:id="3104ae5c-8432-4353-84d1-37545081ea49">
+			<ee:message>
+				<ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
 payload]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<choice doc:name="check if contactId is mapped with plaid credentials" doc:id="2a249314-b038-450c-97c1-fca78b8ffe98" >
+		<choice doc:name="check if contactId is mapped with plaid credentials" doc:id="2a249314-b038-450c-97c1-fca78b8ffe98">
 			<when expression="#[sizeOf(payload) &gt; 0]">
-				<logger level="INFO" doc:name="Logger" doc:id="38f95b6e-0222-4165-a70c-2156ac625f66" message='#["contact exists"]'/>
+				<logger level="INFO" doc:name="Logger" doc:id="38f95b6e-0222-4165-a70c-2156ac625f66" message='#["contact exists"]' />
 			</when>
-			<otherwise >
+			<otherwise>
 				<ee:transform doc:name="insert contact into mongodb" doc:id="f985e159-7fb5-4521-aa74-4316e256b1f8">
 			<ee:message>
 				<ee:set-payload><![CDATA[%dw 2.0
@@ -647,7 +647,7 @@ output application/json
 			</ee:message>
 		</ee:transform>
 				<mongo:insert-document doc:name="Insert document" doc:id="b5228304-3dfc-41c0-ae3e-01eebc4c2e4a" config-ref="LendingAcc" collectionName="${mongo.plaidUserCredsCol}">
-					<mongo:document ><![CDATA[#[%dw 2.0
+					<mongo:document><![CDATA[#[%dw 2.0
 output application/json
 ---
 {
@@ -656,7 +656,7 @@ output application/json
   "contact_id": vars.salesforceAggResponse.Contact..Id[0]
 }]]]></mongo:document>
 				</mongo:insert-document>
-				<logger level="INFO" doc:name="Logger" doc:id="1bc24498-3501-4de7-8773-64ff67c4338c" message='#["Loan Contact Id is mapped with plaid credentials"]'/>
+				<logger level="INFO" doc:name="Logger" doc:id="1bc24498-3501-4de7-8773-64ff67c4338c" message='#["Loan Contact Id is mapped with plaid credentials"]' />
 			
 </otherwise>
 		</choice>
